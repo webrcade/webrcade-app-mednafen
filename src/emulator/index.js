@@ -8,12 +8,15 @@ import {
   CIDS,
   LOG  
 } from "@webrcade/app-common"
+import PceFast from "./system/PceFast";
 
 window.audioCallback = null;
 
 export class Emulator extends AppWrapper {
   constructor(app, debug = false) {
     super(app, debug);
+
+console.log(this.getProps());
 
     this.mednafenModule = null;
     this.romBytes = null;
@@ -22,6 +25,15 @@ export class Emulator extends AppWrapper {
     this.saveStatePath = null;
     this.started = false;
     this.escapeCount = -1;
+
+    const type = this.getProps().type;
+    console.log("Type: " + type);
+    if (type === 'mednafen-pce' || type === 'mednafen-sgx') {
+      this.system = new PceFast(this);
+    } else {
+      throw  "Unknown system: " + type;
+    }  
+    window.system = this.system;
   }
 
   async setRom(name, bytes, md5) {
@@ -58,7 +70,7 @@ export class Emulator extends AppWrapper {
   }
 
   pollControls() {
-    const { controllers } = this;
+    const { controllers, system } = this;
     
     controllers.poll();
 
@@ -72,7 +84,7 @@ export class Emulator extends AppWrapper {
         }
       }
 
-      // this.mednafenModule._updateControls(i, input, axisX, axisY);
+      system.pollControls(controllers, i);
     }
   }
                              
@@ -125,7 +137,7 @@ export class Emulator extends AppWrapper {
   }
 
   async onStart(canvas) {
-    const { app, debug, mednafenModule, romBytes } = this;
+    const { app, debug, mednafenModule, romBytes, system } = this;
 
     try {
       // FS
@@ -141,14 +153,17 @@ export class Emulator extends AppWrapper {
       mednafenModule._emInit();
 
       // Load the ROM
-      const filename = "game.pce";
+      const filename = system.getFileName();
       const u8array = new Uint8Array(romBytes);
       FS.writeFile(filename, u8array);
       const loadMethod = mednafenModule.cwrap('LoadGame', 'number', ['string', 'string']);
       loadMethod(null, filename);
 
+      // Notify the system that the ROM was loaded
+      system.afterLoad();
+
       // Create display loop
-      this.displayLoop = new DisplayLoop(60, false, debug);
+      this.displayLoop = new DisplayLoop(60, true, debug);
 
       // Start the audio processor
       this.audioProcessor.start();      
@@ -165,8 +180,8 @@ export class Emulator extends AppWrapper {
       // Start the display loop    
       this.displayLoop.start(() => {        
         try {
-          mednafenModule._emStep();
           this.pollControls();
+          mednafenModule._emStep();
           
         } catch (e) {
           app.exit(e);

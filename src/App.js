@@ -24,11 +24,16 @@ class App extends WebrcadeApp {
 
     const { appProps, ModeEnum } = this;
 
-// TODO: Update for mednafen    
-    const exts = 
-      AppRegistry.instance.getExtensions(APP_TYPE_KEYS.PARALLEL_N64, true, false);
-    const extsNotUnique = 
-      AppRegistry.instance.getExtensions(APP_TYPE_KEYS.PARALLEL_N64, true, true);    
+    const exts = [
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, false),
+    ];
+    const extsNotUnique = [
+      ...new Set([
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, true),
+      ])
+    ];      
 
     try {
       // Get the ROM location that was specified

@@ -1,0 +1,4 @@
+[submodule "modules/wii-mednafen"]
+	path = modules/wii-mednafen
+	url = https://github.com/raz0red/wii-mednafen.git
+	branch = webrcade

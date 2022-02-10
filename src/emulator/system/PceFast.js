@@ -26,11 +26,13 @@ export default class PceFast extends System {
   constructor(emu) {
     super(emu);
 
-    this.twoButtonMode = true;
+    this.twoButtonMode = !(
+      emu.getProps().pad6button &&
+      emu.getProps().pad6button === true);
   }
 
   pollControls(controllers, index) {
-    let input = PCE_NONE;    
+    let input = PCE_NONE;
     if (controllers.isControlDown(index, CIDS.UP)) {
       input |= PCE_UP;
     }
@@ -61,31 +63,33 @@ export default class PceFast extends System {
         input |= PCE_I;
       }
       if (controllers.isControlDown(index, CIDS.Y)) {
-        input|= PCE_II;
+        input |= PCE_II;
       }
     } else {
-      // TODO: 6 button mode
+      if (controllers.isControlDown(index, CIDS.Y)) {
+        input |= PCE_III;
+      }
+      if (controllers.isControlDown(index, CIDS.X)) {
+        input |= PCE_IV;
+      }
+      if (controllers.isControlDown(index, CIDS.LBUMP)) {
+        input |= PCE_V;
+      }
+      if (controllers.isControlDown(index, CIDS.RBUMP)) {
+        input |= PCE_VI;
+      }
     }
-
-    // TODO: 6 button mode
-    // if (controllers.isControlDown(i, CIDS.X)) {
-    //   input[i] |= CONTROLS.INPUT_A;
-    // }
-    // if (controllers.isControlDown(i, CIDS.LBUMP)) {
-    //   input[i] |= CONTROLS.INPUT_X;
-    // }
-    // if (controllers.isControlDown(i, CIDS.Y)) {
-    //   input[i] |= CONTROLS.INPUT_Y;
-    // }
-    // if (controllers.isControlDown(i, CIDS.RBUMP)) {
-    //   input[i] |= CONTROLS.INPUT_Z;
-    // }
 
     this.padData[index] = input;
   }
 
   afterLoad() {
-    // TODO: Set 3 or 6 button modes (call into mednafen)
+    // Enable 6 button mode if applicable
+    if (!this.twoButtonMode) {
+      for (let i = 0; i < 4; i++) {
+        this.emu.mednafenModule._emPceSet6PadEnabled(i, 1);
+      }
+    }
   }
 
   getFileName() {

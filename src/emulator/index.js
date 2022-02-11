@@ -9,6 +9,7 @@ import {
   LOG  
 } from "@webrcade/app-common"
 import PceFast from "./system/PceFast";
+import Vb from './system/Vb';
 
 window.audioCallback = null;
 
@@ -30,8 +31,10 @@ console.log(this.getProps());
     console.log("Type: " + type);
     if (type === 'mednafen-pce' || type === 'mednafen-sgx') {
       this.system = new PceFast(this);
+    } else if (type === 'mednafen-vb') {      
+      this.system = new Vb(this);
     } else {
-      throw  "Unknown system: " + type;
+      throw Error("Unknown system: " + type);
     }  
     window.system = this.system;
   }
@@ -163,7 +166,7 @@ console.log(this.getProps());
       system.afterLoad();
 
       // Create display loop
-      this.displayLoop = new DisplayLoop(60, true, debug);
+      this.displayLoop = new DisplayLoop(system.getRefreshRate(), true, debug);
 
       // Start the audio processor
       this.audioProcessor.start();      

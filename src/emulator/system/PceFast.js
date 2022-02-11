@@ -83,7 +83,13 @@ export default class PceFast extends System {
     this.padData[index] = input;
   }
 
+  getRefreshRate() {
+    return 60;
+  }
+
   afterLoad() {
+    super.addCanvasClass("pce-sizing");
+
     // Enable 6 button mode if applicable
     if (!this.twoButtonMode) {
       for (let i = 0; i < 4; i++) {

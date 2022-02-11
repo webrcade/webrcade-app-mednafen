@@ -1,15 +1,26 @@
 export default class System {
   constructor(emu) {
     this.emu = emu;
-    this.padData = new Array(4);    
+    this.padData = new Array(4);        
   }
 
   pollControls(controllers, index) {}
 
-  afterLoad() {}
+  afterLoad() {    
+  }
 
   getFileName() {
-    throw "Not implemented.";    
+    throw Error("Not implemented.");    
+  }
+
+  getRefreshRate() {
+    throw Error("Not implemented.");
+  }
+
+  addCanvasClass(className) {
+    const canvas = this.emu.mednafenModule.canvas;
+    if (!canvas) throw Error("Canvas has not been set.");
+    canvas.classList.add(className);
   }
 
   updateInputDeviceData(device) {

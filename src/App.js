@@ -27,11 +27,15 @@ class App extends WebrcadeApp {
     const exts = [
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, false),
     ];
     const extsNotUnique = [
       ...new Set([
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, true),
       ])
     ];      
 

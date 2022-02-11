@@ -8,6 +8,8 @@ import {
   CIDS,
   LOG  
 } from "@webrcade/app-common"
+
+import Ngc from "./system/Ngc";
 import PceFast from "./system/PceFast";
 import Vb from './system/Vb';
 
@@ -33,6 +35,8 @@ console.log(this.getProps());
       this.system = new PceFast(this);
     } else if (type === 'mednafen-vb') {      
       this.system = new Vb(this);
+    } else if (type === 'mednafen-ngc') {      
+      this.system = new Ngc(this);
     } else {
       throw Error("Unknown system: " + type);
     }  

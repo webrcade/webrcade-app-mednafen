@@ -12,14 +12,13 @@ import {
 import Ngc from "./system/Ngc";
 import PceFast from "./system/PceFast";
 import Vb from './system/Vb';
+import WSwan from './system/WSwan'
 
 window.audioCallback = null;
 
 export class Emulator extends AppWrapper {
   constructor(app, debug = false) {
     super(app, debug);
-
-console.log(this.getProps());
 
     this.mednafenModule = null;
     this.romBytes = null;
@@ -35,8 +34,10 @@ console.log(this.getProps());
       this.system = new PceFast(this);
     } else if (type === 'mednafen-vb') {      
       this.system = new Vb(this);
-    } else if (type === 'mednafen-ngc') {      
+    } else if (type === 'mednafen-ngc' || type === 'mednafen-ngp') {      
       this.system = new Ngc(this);
+    } else if (type === 'mednafen-wsc' || type === 'mednafen-ws') {      
+      this.system = new WSwan(this);
     } else {
       throw Error("Unknown system: " + type);
     }  
@@ -170,7 +171,7 @@ console.log(this.getProps());
       system.afterLoad();
 
       // Create display loop
-      this.displayLoop = new DisplayLoop(system.getRefreshRate(), true, debug);
+      this.displayLoop = new DisplayLoop(system.getRefreshRate(), system.isVsync(), debug);
 
       // Start the audio processor
       this.audioProcessor.start();      

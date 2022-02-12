@@ -29,6 +29,9 @@ class App extends WebrcadeApp {
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGP, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WS, true, false),
     ];
     const extsNotUnique = [
       ...new Set([
@@ -36,6 +39,9 @@ class App extends WebrcadeApp {
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGP, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WS, true, true),
       ])
     ];      
 

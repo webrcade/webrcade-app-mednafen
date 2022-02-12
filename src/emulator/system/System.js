@@ -17,10 +17,20 @@ export default class System {
     throw Error("Not implemented.");
   }
 
+  isVsync() {
+    return true;
+  }
+
   addCanvasClass(className) {
     const canvas = this.emu.mednafenModule.canvas;
     if (!canvas) throw Error("Canvas has not been set.");
     canvas.classList.add(className);
+  }
+
+  removeCanvasClass(className) {
+    const canvas = this.emu.mednafenModule.canvas;
+    if (!canvas) throw Error("Canvas has not been set.");
+    canvas.classList.remove(className);
   }
 
   updateInputDeviceData(device) {

@@ -25,3 +25,30 @@
   max-width: calc(96vh*1.052) !important;
   max-height: calc(96vw*.95) !important;  
 }
+
+.ws-rotate0 {
+  max-width: calc(96vh*1.555) !important;
+  max-height: calc(96vw*.642) !important;  
+}
+
+.ws-rotate90 {
+  width: 96vh !important;
+  height: 96vw !important;
+  max-height: calc(96vh*.642) !important;
+  max-width: calc(96vw*1.555) !important;  
+  transform: translate(-50%, -50%) rotate(90deg) !important;
+}
+
+.ws-rotate180 {
+  max-width: calc(96vh*1.555) !important;
+  max-height: calc(96vw*.642) !important;  
+  transform: translate(-50%, -50%) rotate(180deg) !important;
+}
+
+.ws-rotate270 {
+  width: 96vh !important;
+  height: 96vw !important;
+  max-height: calc(96vh*.642) !important;
+  max-width: calc(96vw*1.555) !important;  
+  transform: translate(-50%, -50%) rotate(270deg) !important;
+}

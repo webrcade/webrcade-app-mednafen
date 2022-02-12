@@ -74,7 +74,11 @@ export default class Vb extends System {
   }
 
   getRefreshRate() {
-    return 50.27;
+    return 50.3;
+  }
+
+  isVsync() {
+    return true;
   }
 
   afterLoad() {

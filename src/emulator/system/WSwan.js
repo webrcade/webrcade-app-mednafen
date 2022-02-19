@@ -26,7 +26,13 @@ export default class WSwan extends System {
       this.emu.getProps().rotated &&
       this.emu.getProps().rotated === true;
     this.selectDown = false;
+
+    this.langEnglish = true;
+    if (emu.getProps().language && emu.getProps().language == 1) {
+      this.langEnglish = false;
+    }    
   }
+
   pollControls(controllers, index) {
     let input = WS_NONE;
 
@@ -130,6 +136,10 @@ export default class WSwan extends System {
       super.removeCanvasClass("ws-rotate270");
       super.addCanvasClass("ws-rotate0");
     }
+  }
+
+  beforeLoad() {
+    this.emu.mednafenModule._Wswan_SetLanguage(this.langEnglish ?  1 : 0);
   }
 
   afterLoad() {

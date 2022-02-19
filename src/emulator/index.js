@@ -201,6 +201,9 @@ export class Emulator extends AppWrapper {
       // Initialize the module
       mednafenModule._emInit();
 
+      // Notify before the load
+      system.beforeLoad();
+
       // Load the ROM
       const filename = system.getFileName();
       const u8array = new Uint8Array(romBytes);

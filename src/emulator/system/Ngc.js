@@ -15,6 +15,14 @@ const NGP_B = 0x0020;
 const NGP_OPTION = 0x0040;
 
 export default class Ngc extends System {
+  constructor(emu) {
+    super(emu);
+
+    this.langEnglish = true;
+    if (emu.getProps().language && emu.getProps().language == 1) {
+      this.langEnglish = false;
+    }    
+  }
 
   pollControls(controllers, index) {
     let input = NGP_NONE;
@@ -49,8 +57,12 @@ export default class Ngc extends System {
     return 60;
   }
 
+  beforeLoad() {
+    this.emu.mednafenModule._Ngp_SetLanguage(this.langEnglish ?  1 : 0);
+  }
+
   afterLoad() {
-    super.addCanvasClass("ngc-sizing");
+    super.addCanvasClass("ngc-sizing");    
   }
 
   getFileName() {

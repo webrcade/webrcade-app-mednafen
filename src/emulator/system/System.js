@@ -6,6 +6,9 @@ export default class System {
 
   pollControls(controllers, index) {}
 
+  beforeLoad() {
+  }
+
   afterLoad() {    
   }
 

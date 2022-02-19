@@ -102,5 +102,9 @@ export default class PceFast extends System {
     return this.emu.getProps().type === 'mednafen-pce' ?
       "game.pce" : "game.sgx";
   }
+
+  isSaveStateSupported() {
+    return true;
+  }
 };
 

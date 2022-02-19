@@ -56,5 +56,13 @@ export default class Ngc extends System {
   getFileName() {
     return "game.ngc";
   }
+
+  isSaveStateSupported() {
+    return true;
+  }
+
+  getSaveFileName() {
+    return "flash.sav";
+  }
 };
 

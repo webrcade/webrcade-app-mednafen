@@ -31,7 +31,7 @@ export default class WSwan extends System {
     let input = WS_NONE;
 
     if (index === 0) {
-      if (this.rotation === 0 || this.rotation === 180) {
+      if (!this.rotated) {
         if (controllers.isControlDown(index, CIDS.UP)) {
           input |= WS_X1;
         }
@@ -138,6 +138,10 @@ export default class WSwan extends System {
 
   getFileName() {
     return "game.wsc";
+  }
+
+  isSaveStateSupported() {
+    return true;
   }
 };
 

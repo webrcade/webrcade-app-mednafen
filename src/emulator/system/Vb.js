@@ -88,5 +88,9 @@ export default class Vb extends System {
   getFileName() {
     return "game.vb";
   }
+
+  isSaveStateSupported() {
+    return true;
+  }
 };
 

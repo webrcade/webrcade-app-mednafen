@@ -38,4 +38,17 @@ export default class System {
       return this.padData[device];
     }
   }
+
+  isSaveStateSupported() {
+    return false;
+  }
+
+  getSaveFileName() {
+    return "sram.sav";
+  }
+
+  getSaveStatePath() {
+    const { emu } = this;
+    return emu.app.getStoragePath(`${emu.romMd5}/sav`);
+  }
 };

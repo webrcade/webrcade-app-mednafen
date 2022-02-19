@@ -24,7 +24,6 @@ export class Emulator extends AppWrapper {
     this.romBytes = null;
     this.romMd5 = null;
     this.romName = null;
-    this.saveStatePath = null;
     this.started = false;
     this.escapeCount = -1;
 
@@ -136,12 +135,54 @@ export class Emulator extends AppWrapper {
   }
 
   async loadState() {
-    return;    
+    const { mednafenModule, storage, system } = this;
+    const { FS } = mednafenModule;
+
+    if (!system.isSaveStateSupported()) {
+      return;
+    }        
+
+    const saveFile = system.getSaveFileName();
+    const saveStatePath = system.getSaveStatePath();
+
+    // Write the save state (if applicable)
+    try {
+      // Create the save path (MEM FS)
+      const res = FS.analyzePath(saveFile, true);
+      if (!res.exists) {
+        const s = await storage.get(saveStatePath);
+        if (s) {
+          LOG.info('writing sram file: ' + saveStatePath);
+          FS.writeFile(saveFile, s);
+        }
+      }
+    } catch (e) {
+      LOG.error(e);
+    }    
   }
 
 
   async saveState() {
-    return;
+    const { mednafenModule, started, system } = this;
+    const { FS } = mednafenModule;
+
+    if (!started || !system.isSaveStateSupported()) {
+      return;
+    }
+
+    const saveFile = system.getSaveFileName();
+    const saveStatePath = system.getSaveStatePath();
+    
+    if (saveFile && saveStatePath && mednafenModule._emSramSave()) {
+      const res = FS.analyzePath(saveFile, true);
+      if (res.exists) {
+        const s = FS.readFile(saveFile);              
+        if (s) {
+          LOG.info('saving to: ' + saveStatePath);
+          await this.saveStateToStorage(saveStatePath, s);
+        }
+      }    
+    }
   }
 
   async onStart(canvas) {

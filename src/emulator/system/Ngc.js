@@ -19,6 +19,7 @@ export default class Ngc extends System {
     super(emu);
 
     this.langEnglish = true;
+    // eslint-disable-next-line
     if (emu.getProps().language && emu.getProps().language == 1) {
       this.langEnglish = false;
     }    

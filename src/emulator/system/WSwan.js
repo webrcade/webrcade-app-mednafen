@@ -28,6 +28,7 @@ export default class WSwan extends System {
     this.selectDown = false;
 
     this.langEnglish = true;
+    // eslint-disable-next-line
     if (emu.getProps().language && emu.getProps().language == 1) {
       this.langEnglish = false;
     }    
@@ -81,11 +82,11 @@ export default class WSwan extends System {
         if (controllers.isControlDown(index, CIDS.LEFT)) {
           input |= WS_Y1;
         }
-        if (controllers.isControlDown(index, CIDS.RTRIG)) {
-          input |= WS_Y1;
+        if (controllers.isControlDown(index, CIDS.RBUMP)) {
+          input |= WS_B;
         }
-        if (controllers.isControlDown(index, CIDS.LTRIG)) {
-          input |= WS_Y3;
+        if (controllers.isControlDown(index, CIDS.LBUMP)) {
+          input |= WS_A;
         }
         if (controllers.isControlDown(index, CIDS.X) || 
           controllers.isAxisLeft(index, 1)) {

@@ -4,13 +4,29 @@
 
 This repository contains [webЯcade](https://www.webrcade.com) applications for the following systems:
 
-* [NEC PC Engine](#sega-genesis-application)
+* [NEC PC Engine](#nec-pc-engine)
 * [NEC PC Engine SuperGrafx](#sega-master-system-application)
 * [Nintendo Virtual Boy](#sega-sg-1000-application)
 * [Bandai WonderSwan (and WonderSwan Color)](#sega-game-gear-application)
 * [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#sega-game-gear-application)
 
 The underlying emulators are a partial Emscripten port of the [Mednafen](http://mednafen.sourceforge.net/) multi-system emulator.
+
+## NEC PC Engine
+
+The PC Engine (TurboGrafx-16) application for [webЯcade](https://www.webrcade.com) is an emulator for the [PC Engine](https://en.wikipedia.org/wiki/TurboGrafx-16) and [TurboGrafx-16](https://en.wikipedia.org/wiki/TurboGrafx-16) game consoles.
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/pce.png" width="90%">
+ </a>
+ <br>
+ <i>Nantettatte Engine by Andrew Darovich and Paul Weller</i>
+</p>
+
+### Documentation
+
+The [NEC PC Engine Application Documentation](https://docs.webrcade.com/apps/emulators/pce/) includes [keyboard](https://docs.webrcade.com/apps/emulators/pce/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/pce/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/pce/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/pce/#feed). 
 
 ## LICENSE
 

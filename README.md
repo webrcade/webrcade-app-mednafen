@@ -6,7 +6,7 @@ This repository contains [webЯcade](https://www.webrcade.com) applications for 
 
 * [NEC PC Engine](#nec-pc-engine)
 * [NEC PC Engine SuperGrafx](#nec-pc-engine-supergrafx)
-* [Nintendo Virtual Boy](#sega-sg-1000-application)
+* [Nintendo Virtual Boy](#nintendo-virtual-boy)
 * [Bandai WonderSwan (and WonderSwan Color)](#sega-game-gear-application)
 * [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#sega-game-gear-application)
 
@@ -43,6 +43,22 @@ The PC Engine SuperGrafx application for [webЯcade](https://www.webrcade.com) i
 ### Documentation
 
 The [NEC PC Engine SuperGrafx Application Documentation](https://docs.webrcade.com/apps/emulators/sgx/) includes [keyboard](https://docs.webrcade.com/apps/emulators/sgx/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/sgx/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/sgx/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/sgx/#feed). 
+
+## Nintendo Virtual Boy
+
+The Nintendo Virtual Boy application for [webЯcade](https://www.webrcade.com) is an emulator for the [Virtual Boy game console](https://en.wikipedia.org/wiki/Virtual_Boy). 
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/vb.png" width="90%">
+ </a>
+ <br>
+ <i>Fishbone by thunderstruck (and others)</i>
+</p>
+
+### Documentation
+
+The [Nintendo Virtual Boy Application Documentation](https://docs.webrcade.com/apps/emulators/vb/) includes [keyboard](https://docs.webrcade.com/apps/emulators/vb/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/vb/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/vb/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/vb/#feed). 
 
 ## LICENSE
 

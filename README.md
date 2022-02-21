@@ -8,7 +8,7 @@ This repository contains [webЯcade](https://www.webrcade.com) applications for 
 * [NEC PC Engine SuperGrafx](#nec-pc-engine-supergrafx)
 * [Nintendo Virtual Boy](#nintendo-virtual-boy)
 * [Bandai WonderSwan (and WonderSwan Color)](#bandai-wonderswan)
-* [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#sega-game-gear-application)
+* [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#snk-neo-geo-pocket)
 
 The underlying emulators are a partial Emscripten port of the [Mednafen](http://mednafen.sourceforge.net/) multi-system emulator.
 
@@ -75,6 +75,22 @@ The Bandai WonderSwan application for [webЯcade](https://www.webrcade.com) is a
 ### Documentation
 
 The [Bandai WonderSwan Application Documentation](https://docs.webrcade.com/apps/emulators/ws/) includes [keyboard](https://docs.webrcade.com/apps/emulators/ws/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/ws/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/ws/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/ws/#feed). 
+
+## SNK Neo Geo Pocket
+
+The SNK Neo Geo Pocket application for [webЯcade](https://www.webrcade.com) is an emulator for the [Neo Geo Pocket](https://en.wikipedia.org/wiki/Neo_Geo_Pocket) and [Neo Geo Pocket Color](https://en.wikipedia.org/wiki/Neo_Geo_Pocket_Color) game consoles. 
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/ngp.png" width="90%">
+ </a>
+ <br>
+ <i>Dodger by Ivan Mackintosh</i>
+</p>
+
+### Documentation
+
+The [SNK Neo Geo Pocket Application Documentation](https://docs.webrcade.com/apps/emulators/ngp/) includes [keyboard](https://docs.webrcade.com/apps/emulators/ngp/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/ngp/#gamepad) control mappings, information related to [Flash Memory](https://docs.webrcade.com/apps/emulators/ngp/#flash-memory) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/ngp/#feed). 
 
 ## LICENSE
 

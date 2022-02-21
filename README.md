@@ -7,7 +7,7 @@ This repository contains [webЯcade](https://www.webrcade.com) applications for 
 * [NEC PC Engine](#nec-pc-engine)
 * [NEC PC Engine SuperGrafx](#nec-pc-engine-supergrafx)
 * [Nintendo Virtual Boy](#nintendo-virtual-boy)
-* [Bandai WonderSwan (and WonderSwan Color)](#sega-game-gear-application)
+* [Bandai WonderSwan (and WonderSwan Color)](#bandai-wonderswan)
 * [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#sega-game-gear-application)
 
 The underlying emulators are a partial Emscripten port of the [Mednafen](http://mednafen.sourceforge.net/) multi-system emulator.
@@ -59,6 +59,22 @@ The Nintendo Virtual Boy application for [webЯcade](https://www.webrcade.com) i
 ### Documentation
 
 The [Nintendo Virtual Boy Application Documentation](https://docs.webrcade.com/apps/emulators/vb/) includes [keyboard](https://docs.webrcade.com/apps/emulators/vb/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/vb/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/vb/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/vb/#feed). 
+
+## Bandai WonderSwan
+
+The Bandai WonderSwan application for [webЯcade](https://www.webrcade.com) is an emulator for the [WonderSwan](https://en.wikipedia.org/wiki/WonderSwan) and [WonderSwan Color](https://en.wikipedia.org/wiki/WonderSwan) game consoles.
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/wsc.png" width="90%">
+ </a>
+ <br>
+ <i>Wondersnake 2 by Dox & Kojote</i>
+</p>
+
+### Documentation
+
+The [Bandai WonderSwan Application Documentation](https://docs.webrcade.com/apps/emulators/ws/) includes [keyboard](https://docs.webrcade.com/apps/emulators/ws/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/ws/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/ws/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/ws/#feed). 
 
 ## LICENSE
 

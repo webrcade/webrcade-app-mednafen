@@ -5,7 +5,7 @@
 This repository contains [webЯcade](https://www.webrcade.com) applications for the following systems:
 
 * [NEC PC Engine](#nec-pc-engine)
-* [NEC PC Engine SuperGrafx](#sega-master-system-application)
+* [NEC PC Engine SuperGrafx](#nec-pc-engine-supergrafx)
 * [Nintendo Virtual Boy](#sega-sg-1000-application)
 * [Bandai WonderSwan (and WonderSwan Color)](#sega-game-gear-application)
 * [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#sega-game-gear-application)
@@ -27,6 +27,22 @@ The PC Engine (TurboGrafx-16) application for [webЯcade](https://www.webrcade.c
 ### Documentation
 
 The [NEC PC Engine Application Documentation](https://docs.webrcade.com/apps/emulators/pce/) includes [keyboard](https://docs.webrcade.com/apps/emulators/pce/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/pce/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/pce/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/pce/#feed). 
+
+## NEC PC Engine SuperGrafx
+
+The PC Engine SuperGrafx application for [webЯcade](https://www.webrcade.com) is an emulator for the [PC Engine SuperGrafx](https://en.wikipedia.org/wiki/PC_Engine_SuperGrafx) game console. 
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/sgx.png" width="90%">
+ </a>
+ <br>
+ <i>SuperGrafx Demo by Chris Covell</i>
+</p>
+
+### Documentation
+
+The [NEC PC Engine SuperGrafx Application Documentation](https://docs.webrcade.com/apps/emulators/sgx/) includes [keyboard](https://docs.webrcade.com/apps/emulators/sgx/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/sgx/#gamepad) control mappings, information related to [battery-backed SRAM](https://docs.webrcade.com/apps/emulators/sgx/#battery-backed-sram) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/sgx/#feed). 
 
 ## LICENSE
 

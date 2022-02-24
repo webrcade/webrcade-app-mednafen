@@ -9,6 +9,7 @@ import {
   LOG  
 } from "@webrcade/app-common"
 
+import Lynx from "./system/Lynx";
 import Ngc from "./system/Ngc";
 import PceFast from "./system/PceFast";
 import Vb from './system/Vb';
@@ -37,6 +38,8 @@ export class Emulator extends AppWrapper {
       this.system = new Ngc(this);
     } else if (type === 'mednafen-wsc' || type === 'mednafen-ws') {      
       this.system = new WSwan(this);
+    } else if (type === 'mednafen-lnx') {      
+      this.system = new Lynx(this);
     } else {
       throw Error("Unknown system: " + type);
     }  
@@ -202,7 +205,7 @@ export class Emulator extends AppWrapper {
       mednafenModule._emInit();
 
       // Notify before the load
-      system.beforeLoad();
+      await system.beforeLoad();
 
       // Load the ROM
       const filename = system.getFileName();
@@ -215,7 +218,8 @@ export class Emulator extends AppWrapper {
       system.afterLoad();
 
       // Create display loop
-      this.displayLoop = new DisplayLoop(system.getRefreshRate(), system.isVsync(), debug);
+      let refreshRate = system.getRefreshRate();
+      this.displayLoop = new DisplayLoop(refreshRate, system.isVsync(), debug);
 
       // Start the audio processor
       this.audioProcessor.start();      
@@ -234,7 +238,12 @@ export class Emulator extends AppWrapper {
         try {
           this.pollControls();
           mednafenModule._emStep();
-          
+          const refresh = system.getRefreshRate();
+          if (refresh !== refreshRate) {
+            refreshRate = refresh;
+            return refreshRate;
+          }
+          return 0;          
         } catch (e) {
           app.exit(e);
         }

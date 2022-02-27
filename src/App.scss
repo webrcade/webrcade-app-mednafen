@@ -52,3 +52,24 @@
   max-width: calc(96vw*1.555) !important;  
   transform: translate(-50%, -50%) rotate(270deg) !important;
 }
+
+.lynx-rotate0 {
+  max-width: calc(96vh*1.569) !important;
+  max-height: calc(96vw*.6375) !important;  
+}
+
+.lynx-rotate90 {
+  width: 96vh !important;
+  height: 96vw !important;
+  max-height: calc(96vh*.6375) !important;
+  max-width: calc(96vw*1.569) !important;  
+  transform: translate(-50%, -50%) rotate(90deg) !important;
+}
+
+.lynx-rotate270 {
+  width: 96vh !important;
+  height: 96vw !important;
+  max-height: calc(96vh*.6375) !important;
+  max-width: calc(96vw*1.569) !important;  
+  transform: translate(-50%, -50%) rotate(270deg) !important;
+}

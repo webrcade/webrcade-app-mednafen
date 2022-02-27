@@ -1,6 +1,4 @@
 import {
-  blobToStr,
-  md5,  
   romNameScorer,
   AppRegistry,
   FetchAppData, 
@@ -28,6 +26,7 @@ class App extends WebrcadeApp {
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, false),
+      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_LNX, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGP, true, false),
       ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, false),
@@ -38,6 +37,7 @@ class App extends WebrcadeApp {
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, true),
+        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_LNX, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGP, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, true),
@@ -65,8 +65,8 @@ class App extends WebrcadeApp {
         .then(response => { LOG.info('downloaded.'); return response.blob() })
         .then(blob => uz.unzip(blob, extsNotUnique, exts, romNameScorer))
         .then(blob => { romBlob = blob; return blob; })
-        .then(blob => blobToStr(blob))
-        .then(str => { romMd5 = md5(str); })
+        .then(blob => AppRegistry.instance.getMd5(blob, this.getAppType()))
+        .then(md5 => { romMd5 = md5; })
         .then(() => new Response(romBlob).arrayBuffer())
         .then(bytes => emulator.setRom(
           uz.getName() ? uz.getName() : UrlUtil.getFileName(rom),

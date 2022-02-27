@@ -250,7 +250,11 @@ export class Emulator extends AppWrapper {
       });
     } catch(e) {
       LOG.error(e);
-      app.exit(e);
+      if (e.status && e.status === 1212) {
+        app.exit("Unknown file format.");
+      } else {
+        app.exit(e);
+      }
     }
   }
 }

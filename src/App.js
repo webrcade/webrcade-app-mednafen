@@ -1,14 +1,15 @@
 import {
   romNameScorer,
+  settings,
   AppRegistry,
-  FetchAppData, 
-  Resources, 
-  Unzip, 
-  UrlUtil, 
-  WebrcadeApp, 
+  FetchAppData,
+  Resources,
+  Unzip,
+  UrlUtil,
+  WebrcadeApp,
   APP_TYPE_KEYS,
   LOG,
-  TEXT_IDS 
+  TEXT_IDS
 } from '@webrcade/app-common'
 import { Emulator } from './emulator'
 
@@ -43,7 +44,7 @@ class App extends WebrcadeApp {
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, true),
         ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WS, true, true),
       ])
-    ];      
+    ];
 
     try {
       // Get the ROM location that was specified
@@ -61,6 +62,8 @@ class App extends WebrcadeApp {
       let romBlob = null;
       let romMd5 = null;
       emulator.loadEmscriptenModule()
+        .then(() => settings.load())
+        // .then(() => settings.setBilinearFilterEnabled(true))
         .then(() => new FetchAppData(rom).fetch())
         .then(response => { LOG.info('downloaded.'); return response.blob() })
         .then(blob => uz.unzip(blob, extsNotUnique, exts, romNameScorer))
@@ -107,7 +110,7 @@ class App extends WebrcadeApp {
 
   renderCanvas() {
     return (
-      <canvas ref={canvas => { this.canvas = canvas; }} id="canvas"></canvas>
+      <canvas style={this.getCanvasStyles()} ref={canvas => { this.canvas = canvas; }} id="canvas"></canvas>
     );
   }
 
@@ -119,7 +122,7 @@ class App extends WebrcadeApp {
       <>
         { super.render()}
         { mode === ModeEnum.LOADING ? this.renderLoading() : null}
-        { mode === ModeEnum.PAUSE ? this.renderPauseScreen() : null}        
+        { mode === ModeEnum.PAUSE ? this.renderPauseScreen() : null}
         { mode === ModeEnum.LOADED || mode === ModeEnum.PAUSE  ? this.renderCanvas() : null}
       </>
     );

@@ -1,9 +1,6 @@
-import {
-  CIDS
-} from "@webrcade/app-common"
+import { CIDS } from '@webrcade/app-common';
 
-import System from "./System";
-
+import System from './System';
 
 // PCE Keys
 const PCE_NONE = 0x0000;
@@ -27,8 +24,8 @@ export default class PceFast extends System {
     super(emu);
 
     this.twoButtonMode = !(
-      emu.getProps().pad6button &&
-      emu.getProps().pad6button === true);
+      emu.getProps().pad6button && emu.getProps().pad6button === true
+    );
   }
 
   pollControls(controllers, index) {
@@ -88,7 +85,7 @@ export default class PceFast extends System {
   }
 
   afterLoad() {
-    super.addCanvasClass("pce-sizing");
+    super.addCanvasClass('pce-sizing');
 
     // Enable 6 button mode if applicable
     if (!this.twoButtonMode) {
@@ -99,12 +96,12 @@ export default class PceFast extends System {
   }
 
   getFileName() {
-    return this.emu.getProps().type === 'mednafen-pce' ?
-      "game.pce" : "game.sgx";
+    return this.emu.getProps().type === 'mednafen-pce'
+      ? 'game.pce'
+      : 'game.sgx';
   }
 
   isSaveStateSupported() {
     return true;
   }
-};
-
+}

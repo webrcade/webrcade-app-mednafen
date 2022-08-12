@@ -6,14 +6,14 @@ import {
   DisplayLoop,
   ScriptAudioProcessor,
   CIDS,
-  LOG
-} from "@webrcade/app-common"
+  LOG,
+} from '@webrcade/app-common';
 
-import Lynx from "./system/Lynx";
-import Ngc from "./system/Ngc";
-import PceFast from "./system/PceFast";
+import Lynx from './system/Lynx';
+import Ngc from './system/Ngc';
+import PceFast from './system/PceFast';
 import Vb from './system/Vb';
-import WSwan from './system/WSwan'
+import WSwan from './system/WSwan';
 
 window.audioCallback = null;
 
@@ -29,7 +29,7 @@ export class Emulator extends AppWrapper {
     this.escapeCount = -1;
 
     const type = this.getProps().type;
-    console.log("Type: " + type);
+    console.log('Type: ' + type);
     if (type === 'mednafen-pce' || type === 'mednafen-sgx') {
       this.system = new PceFast(this);
     } else if (type === 'mednafen-vb') {
@@ -41,17 +41,17 @@ export class Emulator extends AppWrapper {
     } else if (type === 'mednafen-lnx') {
       this.system = new Lynx(this);
     } else {
-      throw Error("Unknown system: " + type);
+      throw Error('Unknown system: ' + type);
     }
     window.system = this.system;
   }
 
-  SAVE_NAME = "sav";
+  SAVE_NAME = 'sav';
 
   async setRom(name, bytes, md5) {
     return new Promise((resolve, reject) => {
       if (bytes.byteLength === 0) {
-        throw new Error("The size is invalid (0 bytes).");
+        throw new Error('The size is invalid (0 bytes).');
       }
       this.romName = name;
       this.romMd5 = md5;
@@ -69,7 +69,7 @@ export class Emulator extends AppWrapper {
       new Controller(new DefaultKeyCodeToControlMapping()),
       new Controller(),
       new Controller(),
-      new Controller()
+      new Controller(),
     ]);
   }
 
@@ -87,10 +87,10 @@ export class Emulator extends AppWrapper {
     controllers.poll();
 
     for (let i = 0; i < 4; i++) {
-
       if (controllers.isControlDown(i, CIDS.ESCAPE)) {
         if (this.pause(true)) {
-          controllers.waitUntilControlReleased(i, CIDS.ESCAPE)
+          controllers
+            .waitUntilControlReleased(i, CIDS.ESCAPE)
             .then(() => this.showPauseMenu());
           return;
         }
@@ -104,39 +104,37 @@ export class Emulator extends AppWrapper {
     const { app } = this;
 
     return new Promise((resolve, reject) => {
-
       const script = document.createElement('script');
       document.body.appendChild(script);
 
       script.src = 'js/mednafen.js';
       script.async = false;
       script.onerror = () => {
-        reject("An error occurred attempting to load the mednafen engine.");
-      }
+        reject('An error occurred attempting to load the mednafen engine.');
+      };
       script.onload = () => {
         LOG.info('Script loaded.');
         if (window.mednafen) {
-          window.mednafen()
-            .then(mednafenModule => {
-              console.log(mednafenModule);
-              mednafenModule.onAbort = msg => app.exit(msg);
-              mednafenModule.onExit = () => app.exit();
-              this.mednafenModule = mednafenModule;
-              resolve();
-            });
+          window.mednafen().then((mednafenModule) => {
+            console.log(mednafenModule);
+            mednafenModule.onAbort = (msg) => app.exit(msg);
+            mednafenModule.onExit = () => app.exit();
+            this.mednafenModule = mednafenModule;
+            resolve();
+          });
         } else {
-          reject("An error occurred attempting to load the mednafen engine.");
+          reject('An error occurred attempting to load the mednafen engine.');
         }
       };
     });
   }
 
   async destroy() {
-    console.log('destroy start')
+    console.log('destroy start');
     if (this.audioProcessor) {
       this.audioProcessor.pause(true);
     }
-    console.log('destroy end')
+    console.log('destroy end');
   }
 
   async migrateSaves() {
@@ -272,7 +270,10 @@ export class Emulator extends AppWrapper {
       const filename = system.getFileName();
       const u8array = new Uint8Array(romBytes);
       FS.writeFile(filename, u8array);
-      const loadMethod = mednafenModule.cwrap('LoadGame', 'number', ['string', 'string']);
+      const loadMethod = mednafenModule.cwrap('LoadGame', 'number', [
+        'string',
+        'string',
+      ]);
       loadMethod(null, filename);
 
       // Notify the system that the ROM was loaded
@@ -291,8 +292,14 @@ export class Emulator extends AppWrapper {
       let audioArray = null;
       window.audioCallback = (offset, length) => {
         audioArray = new Int16Array(mednafenModule.HEAP16.buffer, offset, 4096);
-        this.audioProcessor.storeSoundCombinedInput(audioArray, 2, length, 0, 32768);
-      }
+        this.audioProcessor.storeSoundCombinedInput(
+          audioArray,
+          2,
+          length,
+          0,
+          32768,
+        );
+      };
 
       // Start the display loop
       this.displayLoop.start(() => {
@@ -309,10 +316,10 @@ export class Emulator extends AppWrapper {
           app.exit(e);
         }
       });
-    } catch(e) {
+    } catch (e) {
       LOG.error(e);
       if (e.status && e.status === 1212) {
-        app.exit("Unknown file format.");
+        app.exit('Unknown file format.');
       } else {
         app.exit(e);
       }

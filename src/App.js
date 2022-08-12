@@ -9,10 +9,10 @@ import {
   WebrcadeApp,
   APP_TYPE_KEYS,
   LOG,
-  TEXT_IDS
-} from '@webrcade/app-common'
-import { Emulator } from './emulator'
-import { EmulatorPauseScreen } from './pause'
+  TEXT_IDS,
+} from '@webrcade/app-common';
+import { Emulator } from './emulator';
+import { EmulatorPauseScreen } from './pause';
 
 import './App.scss';
 
@@ -25,32 +25,96 @@ class App extends WebrcadeApp {
     const { appProps, ModeEnum } = this;
 
     const exts = [
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_LNX, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGP, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, false),
-      ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WS, true, false),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_PCE,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_SGX,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_VB,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_LNX,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_NGC,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_NGP,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_WSC,
+        true,
+        false,
+      ),
+      ...AppRegistry.instance.getExtensions(
+        APP_TYPE_KEYS.MEDNAFEN_WS,
+        true,
+        false,
+      ),
     ];
     const extsNotUnique = [
       ...new Set([
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_PCE, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_SGX, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_VB, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_LNX, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGC, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_NGP, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WSC, true, true),
-        ...AppRegistry.instance.getExtensions(APP_TYPE_KEYS.MEDNAFEN_WS, true, true),
-      ])
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_PCE,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_SGX,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_VB,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_LNX,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_NGC,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_NGP,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_WSC,
+          true,
+          true,
+        ),
+        ...AppRegistry.instance.getExtensions(
+          APP_TYPE_KEYS.MEDNAFEN_WS,
+          true,
+          true,
+        ),
+      ]),
     ];
 
     try {
       // Get the ROM location that was specified
       const rom = appProps.rom;
-      if (!rom) throw new Error("A ROM file was not specified.");
+      if (!rom) throw new Error('A ROM file was not specified.');
 
       // Create the emulator
       if (this.emulator === null) {
@@ -62,26 +126,42 @@ class App extends WebrcadeApp {
       const uz = new Unzip().setDebug(this.isDebug());
       let romBlob = null;
       let romMd5 = null;
-      emulator.loadEmscriptenModule()
+      emulator
+        .loadEmscriptenModule()
         .then(() => settings.load())
         // .then(() => settings.setBilinearFilterEnabled(true))
         // .then(() => settings.setVsyncEnabled(false))
         .then(() => new FetchAppData(rom).fetch())
-        .then(response => { LOG.info('downloaded.'); return response.blob() })
-        .then(blob => uz.unzip(blob, extsNotUnique, exts, romNameScorer))
-        .then(blob => { romBlob = blob; return blob; })
-        .then(blob => AppRegistry.instance.getMd5(blob, this.getAppType()))
-        .then(md5 => { romMd5 = md5; })
-        .then(() => new Response(romBlob).arrayBuffer())
-        .then(bytes => emulator.setRom(
-          uz.getName() ? uz.getName() : UrlUtil.getFileName(rom),
-          bytes,
-          romMd5))
-        .then(() => this.setState({ mode: ModeEnum.LOADED }))
-        .catch(msg => {
-          LOG.error(msg);
-          this.exit(this.isDebug() ? msg : Resources.getText(TEXT_IDS.ERROR_RETRIEVING_GAME));
+        .then((response) => {
+          LOG.info('downloaded.');
+          return response.blob();
         })
+        .then((blob) => uz.unzip(blob, extsNotUnique, exts, romNameScorer))
+        .then((blob) => {
+          romBlob = blob;
+          return blob;
+        })
+        .then((blob) => AppRegistry.instance.getMd5(blob, this.getAppType()))
+        .then((md5) => {
+          romMd5 = md5;
+        })
+        .then(() => new Response(romBlob).arrayBuffer())
+        .then((bytes) =>
+          emulator.setRom(
+            uz.getName() ? uz.getName() : UrlUtil.getFileName(rom),
+            bytes,
+            romMd5,
+          ),
+        )
+        .then(() => this.setState({ mode: ModeEnum.LOADED }))
+        .catch((msg) => {
+          LOG.error(msg);
+          this.exit(
+            this.isDebug()
+              ? msg
+              : Resources.getText(TEXT_IDS.ERROR_RETRIEVING_GAME),
+          );
+        });
     } catch (e) {
       this.exit(e);
     }
@@ -127,7 +207,13 @@ class App extends WebrcadeApp {
 
   renderCanvas() {
     return (
-      <canvas style={this.getCanvasStyles()} ref={canvas => { this.canvas = canvas; }} id="canvas"></canvas>
+      <canvas
+        style={this.getCanvasStyles()}
+        ref={(canvas) => {
+          this.canvas = canvas;
+        }}
+        id="canvas"
+      ></canvas>
     );
   }
 
@@ -137,10 +223,12 @@ class App extends WebrcadeApp {
 
     return (
       <>
-        { super.render()}
-        { mode === ModeEnum.LOADING ? this.renderLoading() : null}
-        { mode === ModeEnum.PAUSE ? this.renderPauseScreen() : null}
-        { mode === ModeEnum.LOADED || mode === ModeEnum.PAUSE  ? this.renderCanvas() : null}
+        {super.render()}
+        {mode === ModeEnum.LOADING ? this.renderLoading() : null}
+        {mode === ModeEnum.PAUSE ? this.renderPauseScreen() : null}
+        {mode === ModeEnum.LOADED || mode === ModeEnum.PAUSE
+          ? this.renderCanvas()
+          : null}
       </>
     );
   }

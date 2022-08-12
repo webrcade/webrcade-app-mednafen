@@ -1,12 +1,12 @@
 import {
   AppWrapper,
-  Controller, 
-  Controllers, 
+  Controller,
+  Controllers,
   DefaultKeyCodeToControlMapping,
   DisplayLoop,
   ScriptAudioProcessor,
   CIDS,
-  LOG  
+  LOG
 } from "@webrcade/app-common"
 
 import Lynx from "./system/Lynx";
@@ -32,22 +32,24 @@ export class Emulator extends AppWrapper {
     console.log("Type: " + type);
     if (type === 'mednafen-pce' || type === 'mednafen-sgx') {
       this.system = new PceFast(this);
-    } else if (type === 'mednafen-vb') {      
+    } else if (type === 'mednafen-vb') {
       this.system = new Vb(this);
-    } else if (type === 'mednafen-ngc' || type === 'mednafen-ngp') {      
+    } else if (type === 'mednafen-ngc' || type === 'mednafen-ngp') {
       this.system = new Ngc(this);
-    } else if (type === 'mednafen-wsc' || type === 'mednafen-ws') {      
+    } else if (type === 'mednafen-wsc' || type === 'mednafen-ws') {
       this.system = new WSwan(this);
-    } else if (type === 'mednafen-lnx') {      
+    } else if (type === 'mednafen-lnx') {
       this.system = new Lynx(this);
     } else {
       throw Error("Unknown system: " + type);
-    }  
+    }
     window.system = this.system;
   }
 
+  SAVE_NAME = "sav";
+
   async setRom(name, bytes, md5) {
-    return new Promise((resolve, reject) => {    
+    return new Promise((resolve, reject) => {
       if (bytes.byteLength === 0) {
         throw new Error("The size is invalid (0 bytes).");
       }
@@ -60,7 +62,7 @@ export class Emulator extends AppWrapper {
 
       resolve();
     });
-  }  
+  }
 
   createControllers() {
     return new Controllers([
@@ -69,7 +71,7 @@ export class Emulator extends AppWrapper {
       new Controller(),
       new Controller()
     ]);
-  }  
+  }
 
   createAudioProcessor() {
     return new ScriptAudioProcessor(2, 48000).setDebug(this.debug);
@@ -81,7 +83,7 @@ export class Emulator extends AppWrapper {
 
   pollControls() {
     const { controllers, system } = this;
-    
+
     controllers.poll();
 
     for (let i = 0; i < 4; i++) {
@@ -97,7 +99,7 @@ export class Emulator extends AppWrapper {
       system.pollControls(controllers, i);
     }
   }
-                             
+
   loadEmscriptenModule() {
     const { app } = this;
 
@@ -107,7 +109,7 @@ export class Emulator extends AppWrapper {
       document.body.appendChild(script);
 
       script.src = 'js/mednafen.js';
-      script.async = false;      
+      script.async = false;
       script.onerror = () => {
         reject("An error occurred attempting to load the mednafen engine.");
       }
@@ -118,7 +120,7 @@ export class Emulator extends AppWrapper {
             .then(mednafenModule => {
               console.log(mednafenModule);
               mednafenModule.onAbort = msg => app.exit(msg);
-              mednafenModule.onExit = () => app.exit();  
+              mednafenModule.onExit = () => app.exit();
               this.mednafenModule = mednafenModule;
               resolve();
             });
@@ -137,54 +139,113 @@ export class Emulator extends AppWrapper {
     console.log('destroy end')
   }
 
+  async migrateSaves() {
+    const { storage, system, SAVE_NAME } = this;
+
+    const saveStatePath = system.getSaveStatePath();
+
+    // Load old saves (if applicable)
+    const sram = await storage.get(saveStatePath);
+    if (sram) {
+      LOG.info('Migrating local saves.');
+
+      await this.getSaveManager().saveLocal(saveStatePath, [
+        {
+          name: SAVE_NAME,
+          content: sram,
+        },
+      ]);
+
+      // Delete old location (and info)
+      await storage.remove(saveStatePath);
+      await storage.remove(`${saveStatePath}/info`);
+    }
+  }
+
   async loadState() {
-    const { mednafenModule, storage, system } = this;
+    const { mednafenModule, system, SAVE_NAME } = this;
     const { FS } = mednafenModule;
 
     if (!system.isSaveStateSupported()) {
       return;
-    }        
+    }
 
-    const saveFile = system.getSaveFileName();
-    const saveStatePath = system.getSaveStatePath();
-
-    // Write the save state (if applicable)
     try {
+      // Migrate old save format
+      await this.migrateSaves();
+
+      const saveFile = system.getSaveFileName();
+      const saveStatePath = system.getSaveStatePath();
+
+      // Write the save state (if applicable)
       // Create the save path (MEM FS)
       const res = FS.analyzePath(saveFile, true);
       if (!res.exists) {
-        const s = await storage.get(saveStatePath);
-        if (s) {
-          LOG.info('writing sram file: ' + saveStatePath);
-          FS.writeFile(saveFile, s);
+        // Load from new save format
+        const files = await this.getSaveManager().load(
+          saveStatePath,
+          this.loadMessageCallback,
+        );
+
+        if (files) {
+          for (let i = 0; i < files.length; i++) {
+            const f = files[i];
+            if (f.name === SAVE_NAME) {
+              LOG.info('writing sram file: ' + saveStatePath);
+              FS.writeFile(saveFile, f.content);
+              break;
+            }
+          }
         }
       }
     } catch (e) {
       LOG.error(e);
-    }    
+    }
   }
 
+  async saveInOldFormat(s) {
+    const { system } = this;
+    const saveStatePath = system.getSaveStatePath();
+
+    // old, for testing migration
+    await this.saveStateToStorage(saveStatePath, s);
+  }
 
   async saveState() {
-    const { mednafenModule, started, system } = this;
+    const { mednafenModule, started, system, SAVE_NAME } = this;
     const { FS } = mednafenModule;
 
     if (!started || !system.isSaveStateSupported()) {
       return;
     }
 
-    const saveFile = system.getSaveFileName();
-    const saveStatePath = system.getSaveStatePath();
-    
-    if (saveFile && saveStatePath && mednafenModule._emSramSave()) {
-      const res = FS.analyzePath(saveFile, true);
-      if (res.exists) {
-        const s = FS.readFile(saveFile);              
-        if (s) {
-          LOG.info('saving to: ' + saveStatePath);
-          await this.saveStateToStorage(saveStatePath, s);
+    try {
+      const saveFile = system.getSaveFileName();
+      const saveStatePath = system.getSaveStatePath();
+
+      if (saveFile && saveStatePath && mednafenModule._emSramSave()) {
+        const res = FS.analyzePath(saveFile, true);
+        if (res.exists) {
+          const s = FS.readFile(saveFile);
+          if (s) {
+            LOG.info('saving to: ' + saveStatePath);
+
+            // await this.saveInOldFormat(s);
+            await this.getSaveManager().save(
+              saveStatePath,
+              [
+                {
+                  name: SAVE_NAME,
+                  content: s,
+                },
+              ],
+              this.saveMessageCallback,
+            );
+          }
         }
-      }    
+      }
+    } catch (e) {
+      LOG.error('Error persisting save state: ' + e);
     }
   }
 
@@ -193,11 +254,11 @@ export class Emulator extends AppWrapper {
 
     try {
       // FS
-      const FS = mednafenModule.FS;      
+      const FS = mednafenModule.FS;
 
       // Set the canvas for the module
-      mednafenModule.canvas = canvas; 
-                
+      mednafenModule.canvas = canvas;
+
       // Load save state
       await this.loadState();
 
@@ -222,19 +283,19 @@ export class Emulator extends AppWrapper {
       this.displayLoop = new DisplayLoop(refreshRate, system.isVsync(), debug);
 
       // Start the audio processor
-      this.audioProcessor.start();      
+      this.audioProcessor.start();
 
       // Mark that the loop is starting
       this.started = true;
 
       let audioArray = null;
-      window.audioCallback = (offset, length) => {        
+      window.audioCallback = (offset, length) => {
         audioArray = new Int16Array(mednafenModule.HEAP16.buffer, offset, 4096);
         this.audioProcessor.storeSoundCombinedInput(audioArray, 2, length, 0, 32768);
       }
 
-      // Start the display loop    
-      this.displayLoop.start(() => {        
+      // Start the display loop
+      this.displayLoop.start(() => {
         try {
           this.pollControls();
           mednafenModule._emStep();
@@ -243,7 +304,7 @@ export class Emulator extends AppWrapper {
             refreshRate = refresh;
             return refreshRate;
           }
-          return 0;          
+          return 0;
         } catch (e) {
           app.exit(e);
         }

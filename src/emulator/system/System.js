@@ -1,7 +1,7 @@
 export default class System {
   constructor(emu) {
     this.emu = emu;
-    this.padData = new Array(4);        
+    this.padData = new Array(4);
   }
 
   pollControls(controllers, index) {}
@@ -9,11 +9,11 @@ export default class System {
   beforeLoad() {
   }
 
-  afterLoad() {    
+  afterLoad() {
   }
 
   getFileName() {
-    throw Error("Not implemented.");    
+    throw Error("Not implemented.");
   }
 
   getRefreshRate() {

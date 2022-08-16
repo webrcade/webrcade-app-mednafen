@@ -194,6 +194,9 @@ export class Emulator extends AppWrapper {
               break;
             }
           }
+
+          // Cache the initial files
+          await this.getSaveManager().checkFilesChanged(files);
         }
       }
     } catch (e) {
@@ -226,19 +229,22 @@ export class Emulator extends AppWrapper {
         if (res.exists) {
           const s = FS.readFile(saveFile);
           if (s) {
-            LOG.info('saving to: ' + saveStatePath);
-
             // await this.saveInOldFormat(s);
-            await this.getSaveManager().save(
-              saveStatePath,
-              [
-                {
-                  name: SAVE_NAME,
-                  content: s,
-                },
-              ],
-              this.saveMessageCallback,
-            );
+            const files = [
+              {
+                name: SAVE_NAME,
+                content: s,
+              },
+            ];
+
+            if (await this.getSaveManager().checkFilesChanged(files)) {
+              LOG.info('saving to: ' + saveStatePath);
+              await this.getSaveManager().save(
+                saveStatePath,
+                files,
+                this.saveMessageCallback,
+              );
+            }
           }
         }
       }

@@ -1,4 +1,4 @@
-# webЯcade Applications: NEC PC Engine, NEC SuperGrafx, Nintendo Virtual Boy, Bandai WonderSwan, SNK Neo Geo Pocket Emulators
+# webЯcade Applications: NEC PC Engine, NEC SuperGrafx, Nintendo Virtual Boy, Bandai WonderSwan, SNK Neo Geo Pocket, Atari Lynx Emulators
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -9,6 +9,7 @@ This repository contains [webЯcade](https://www.webrcade.com) applications for 
 * [Nintendo Virtual Boy](#nintendo-virtual-boy)
 * [Bandai WonderSwan (and WonderSwan Color)](#bandai-wonderswan)
 * [SNK Neo Geo Pocket (and Neo Geo Pocket Color)](#snk-neo-geo-pocket)
+* [Atari Lynx](#atari-lynx)
 
 The underlying emulators are a partial Emscripten port of the [Mednafen](http://mednafen.sourceforge.net/) multi-system emulator.
 
@@ -91,6 +92,22 @@ The SNK Neo Geo Pocket application for [webЯcade](https://www.webrcade.com) is 
 ### Documentation
 
 The [SNK Neo Geo Pocket Application Documentation](https://docs.webrcade.com/apps/emulators/ngp/) includes [keyboard](https://docs.webrcade.com/apps/emulators/ngp/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/ngp/#gamepad) control mappings, information related to [Flash Memory](https://docs.webrcade.com/apps/emulators/ngp/#flash-memory) support, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/ngp/#feed). 
+
+## Atari Lynx
+
+The Atari Lynx application for [webЯcade](https://www.webrcade.com) is an emulator for the [Atari Lynx](https://en.wikipedia.org/wiki/Atari_Lynx)  handheld game console.
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/lynx.png" width="90%">
+ </a>
+ <br>
+ <i>Xump 2 by Retroguru</i>
+</p>
+
+### Documentation
+
+The [Atari Lynx Application Documentation](https://docs.webrcade.com/apps/emulators/lynx/) includes [keyboard](https://docs.webrcade.com/apps/emulators/lynx/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/lynx/#gamepad) control mappings, and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/lynx/#feed). 
 
 ## LICENSE
 

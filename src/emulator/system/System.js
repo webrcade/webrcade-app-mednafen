@@ -1,23 +1,21 @@
 export default class System {
   constructor(emu) {
     this.emu = emu;
-    this.padData = new Array(4);        
+    this.padData = new Array(4);
   }
 
   pollControls(controllers, index) {}
 
-  beforeLoad() {
-  }
+  beforeLoad() {}
 
-  afterLoad() {    
-  }
+  afterLoad() {}
 
   getFileName() {
-    throw Error("Not implemented.");    
+    throw Error('Not implemented.');
   }
 
   getRefreshRate() {
-    throw Error("Not implemented.");
+    throw Error('Not implemented.');
   }
 
   isVsync() {
@@ -26,13 +24,13 @@ export default class System {
 
   addCanvasClass(className) {
     const canvas = this.emu.mednafenModule.canvas;
-    if (!canvas) throw Error("Canvas has not been set.");
+    if (!canvas) throw Error('Canvas has not been set.');
     canvas.classList.add(className);
   }
 
   removeCanvasClass(className) {
     const canvas = this.emu.mednafenModule.canvas;
-    if (!canvas) throw Error("Canvas has not been set.");
+    if (!canvas) throw Error('Canvas has not been set.');
     canvas.classList.remove(className);
   }
 
@@ -47,11 +45,11 @@ export default class System {
   }
 
   getSaveFileName() {
-    return "sram.sav";
+    return 'sram.sav';
   }
 
   getSaveStatePath() {
     const { emu } = this;
     return emu.app.getStoragePath(`${emu.romMd5}/sav`);
   }
-};
+}

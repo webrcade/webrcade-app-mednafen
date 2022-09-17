@@ -1,8 +1,6 @@
-import {
-  CIDS
-} from "@webrcade/app-common"
+import { CIDS } from '@webrcade/app-common';
 
-import System from "./System";
+import System from './System';
 
 // NeoGeoPocket keys
 const NGP_NONE = 0x0000;
@@ -22,7 +20,7 @@ export default class Ngc extends System {
     // eslint-disable-next-line
     if (emu.getProps().language && emu.getProps().language == 1) {
       this.langEnglish = false;
-    }    
+    }
   }
 
   pollControls(controllers, index) {
@@ -41,10 +39,16 @@ export default class Ngc extends System {
       if (controllers.isControlDown(index, CIDS.LEFT)) {
         input |= NGP_LEFT;
       }
-      if (controllers.isControlDown(index, CIDS.A) || controllers.isControlDown(index, CIDS.Y)) {
+      if (
+        controllers.isControlDown(index, CIDS.A) ||
+        controllers.isControlDown(index, CIDS.Y)
+      ) {
         input |= NGP_A;
       }
-      if (controllers.isControlDown(index, CIDS.B) || controllers.isControlDown(index, CIDS.X)) {
+      if (
+        controllers.isControlDown(index, CIDS.B) ||
+        controllers.isControlDown(index, CIDS.X)
+      ) {
         input |= NGP_B;
       }
       if (controllers.isControlDown(index, CIDS.START)) {
@@ -59,15 +63,15 @@ export default class Ngc extends System {
   }
 
   beforeLoad() {
-    this.emu.mednafenModule._Ngp_SetLanguage(this.langEnglish ?  1 : 0);
+    this.emu.mednafenModule._Ngp_SetLanguage(this.langEnglish ? 1 : 0);
   }
 
   afterLoad() {
-    super.addCanvasClass("ngc-sizing");    
+    super.addCanvasClass('ngc-sizing');
   }
 
   getFileName() {
-    return "game.ngc";
+    return 'game.ngc';
   }
 
   isSaveStateSupported() {
@@ -75,7 +79,6 @@ export default class Ngc extends System {
   }
 
   getSaveFileName() {
-    return "flash.sav";
+    return 'flash.sav';
   }
-};
-
+}

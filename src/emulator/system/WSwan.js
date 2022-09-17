@@ -1,8 +1,6 @@
-import {
-  CIDS
-} from "@webrcade/app-common"
+import { CIDS } from '@webrcade/app-common';
 
-import System from "./System";
+import System from './System';
 
 // WonderSwan keys
 const WS_NONE = 0x0000;
@@ -22,16 +20,15 @@ const WS_B = 0x0400;
 export default class WSwan extends System {
   constructor(emu) {
     super(emu);
-    this.rotated = 
-      this.emu.getProps().rotated &&
-      this.emu.getProps().rotated === true;
+    this.rotated =
+      this.emu.getProps().rotated && this.emu.getProps().rotated === true;
     this.selectDown = false;
 
     this.langEnglish = true;
     // eslint-disable-next-line
     if (emu.getProps().language && emu.getProps().language == 1) {
       this.langEnglish = false;
-    }    
+    }
   }
 
   pollControls(controllers, index) {
@@ -63,10 +60,16 @@ export default class WSwan extends System {
         if (controllers.isControlDown(index, CIDS.LBUMP)) {
           input |= WS_Y4;
         }
-        if (controllers.isControlDown(index, CIDS.A) || controllers.isControlDown(index, CIDS.Y)) {
+        if (
+          controllers.isControlDown(index, CIDS.A) ||
+          controllers.isControlDown(index, CIDS.Y)
+        ) {
           input |= WS_B;
         }
-        if (controllers.isControlDown(index, CIDS.B) || controllers.isControlDown(index, CIDS.X)) {
+        if (
+          controllers.isControlDown(index, CIDS.B) ||
+          controllers.isControlDown(index, CIDS.X)
+        ) {
           input |= WS_A;
         }
       } else {
@@ -88,20 +91,28 @@ export default class WSwan extends System {
         if (controllers.isControlDown(index, CIDS.LBUMP)) {
           input |= WS_A;
         }
-        if (controllers.isControlDown(index, CIDS.X) || 
-          controllers.isAxisLeft(index, 1)) {
+        if (
+          controllers.isControlDown(index, CIDS.X) ||
+          controllers.isAxisLeft(index, 1)
+        ) {
           input |= WS_X1;
         }
-        if (controllers.isControlDown(index, CIDS.Y) ||
-          controllers.isAxisUp(index, 1)) {
+        if (
+          controllers.isControlDown(index, CIDS.Y) ||
+          controllers.isAxisUp(index, 1)
+        ) {
           input |= WS_X2;
         }
-        if (controllers.isControlDown(index, CIDS.A) ||
-            controllers.isAxisDown(index, 1)) {
+        if (
+          controllers.isControlDown(index, CIDS.A) ||
+          controllers.isAxisDown(index, 1)
+        ) {
           input |= WS_X4;
         }
-        if (controllers.isControlDown(index, CIDS.B) || 
-          controllers.isAxisRight(index, 1)) {
+        if (
+          controllers.isControlDown(index, CIDS.B) ||
+          controllers.isAxisRight(index, 1)
+        ) {
           input |= WS_X3;
         }
       }
@@ -131,16 +142,16 @@ export default class WSwan extends System {
 
   updateCanvasClass() {
     if (this.rotated) {
-      super.removeCanvasClass("ws-rotate0");
-      super.addCanvasClass("ws-rotate270");
+      super.removeCanvasClass('ws-rotate0');
+      super.addCanvasClass('ws-rotate270');
     } else {
-      super.removeCanvasClass("ws-rotate270");
-      super.addCanvasClass("ws-rotate0");
+      super.removeCanvasClass('ws-rotate270');
+      super.addCanvasClass('ws-rotate0');
     }
   }
 
   beforeLoad() {
-    this.emu.mednafenModule._Wswan_SetLanguage(this.langEnglish ?  1 : 0);
+    this.emu.mednafenModule._Wswan_SetLanguage(this.langEnglish ? 1 : 0);
   }
 
   afterLoad() {
@@ -148,11 +159,10 @@ export default class WSwan extends System {
   }
 
   getFileName() {
-    return "game.wsc";
+    return 'game.wsc';
   }
 
   isSaveStateSupported() {
     return true;
   }
-};
-
+}

@@ -1,8 +1,6 @@
-import {
-  CIDS
-} from "@webrcade/app-common"
+import { CIDS } from '@webrcade/app-common';
 
-import System from "./System";
+import System from './System';
 
 // Virtual boy keys
 const VB_NONE = 0x0000;
@@ -22,7 +20,6 @@ const VB_R_LEFT = 0x1000;
 const VB_R_DOWN = 0x2000;
 
 export default class Vb extends System {
-
   pollControls(controllers, index) {
     let input = VB_NONE;
 
@@ -39,10 +36,16 @@ export default class Vb extends System {
       if (controllers.isControlDown(index, CIDS.LEFT)) {
         input |= VB_L_LEFT;
       }
-      if (controllers.isControlDown(index, CIDS.A) || controllers.isControlDown(index, CIDS.Y)) {
+      if (
+        controllers.isControlDown(index, CIDS.A) ||
+        controllers.isControlDown(index, CIDS.Y)
+      ) {
         input |= VB_KEY_B;
       }
-      if (controllers.isControlDown(index, CIDS.B) || controllers.isControlDown(index, CIDS.X)) {
+      if (
+        controllers.isControlDown(index, CIDS.B) ||
+        controllers.isControlDown(index, CIDS.X)
+      ) {
         input |= VB_KEY_A;
       }
       if (controllers.isControlDown(index, CIDS.SELECT)) {
@@ -82,15 +85,14 @@ export default class Vb extends System {
   }
 
   afterLoad() {
-    super.addCanvasClass("vb-sizing");
+    super.addCanvasClass('vb-sizing');
   }
 
   getFileName() {
-    return "game.vb";
+    return 'game.vb';
   }
 
   isSaveStateSupported() {
     return true;
   }
-};
-
+}

@@ -1,75 +1,75 @@
-#canvas {  
+#canvas {
   border: 0;
   margin: 0;
-  overflow: hidden;  
+  overflow: hidden;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  position: absolute;  
+  position: absolute;
   width: 96vw;
   height: 96vh;
   // border: 1px solid red;
 }
 
 .pce-sizing {
-  max-width: calc(96vh*1.333) !important;
-  max-height: calc(96vw*.75) !important;  
+  max-width: calc(96vh * 1.333) !important;
+  max-height: calc(96vw * 0.75) !important;
 }
 
 .vb-sizing {
-  max-width: calc(96vh*1.714) !important;
-  max-height: calc(96vw*.583) !important;  
+  max-width: calc(96vh * 1.714) !important;
+  max-height: calc(96vw * 0.583) !important;
 }
 
 .ngc-sizing {
-  max-width: calc(96vh*1.052) !important;
-  max-height: calc(96vw*.95) !important;  
+  max-width: calc(96vh * 1.052) !important;
+  max-height: calc(96vw * 0.95) !important;
 }
 
 .ws-rotate0 {
-  max-width: calc(96vh*1.555) !important;
-  max-height: calc(96vw*.642) !important;  
+  max-width: calc(96vh * 1.555) !important;
+  max-height: calc(96vw * 0.642) !important;
 }
 
 .ws-rotate90 {
   width: 96vh !important;
   height: 96vw !important;
-  max-height: calc(96vh*.642) !important;
-  max-width: calc(96vw*1.555) !important;  
+  max-height: calc(96vh * 0.642) !important;
+  max-width: calc(96vw * 1.555) !important;
   transform: translate(-50%, -50%) rotate(90deg) !important;
 }
 
 .ws-rotate180 {
-  max-width: calc(96vh*1.555) !important;
-  max-height: calc(96vw*.642) !important;  
+  max-width: calc(96vh * 1.555) !important;
+  max-height: calc(96vw * 0.642) !important;
   transform: translate(-50%, -50%) rotate(180deg) !important;
 }
 
 .ws-rotate270 {
   width: 96vh !important;
   height: 96vw !important;
-  max-height: calc(96vh*.642) !important;
-  max-width: calc(96vw*1.555) !important;  
+  max-height: calc(96vh * 0.642) !important;
+  max-width: calc(96vw * 1.555) !important;
   transform: translate(-50%, -50%) rotate(270deg) !important;
 }
 
 .lynx-rotate0 {
-  max-width: calc(96vh*1.569) !important;
-  max-height: calc(96vw*.6375) !important;  
+  max-width: calc(96vh * 1.569) !important;
+  max-height: calc(96vw * 0.6375) !important;
 }
 
 .lynx-rotate90 {
   width: 96vh !important;
   height: 96vw !important;
-  max-height: calc(96vh*.6375) !important;
-  max-width: calc(96vw*1.569) !important;  
+  max-height: calc(96vh * 0.6375) !important;
+  max-width: calc(96vw * 1.569) !important;
   transform: translate(-50%, -50%) rotate(90deg) !important;
 }
 
 .lynx-rotate270 {
   width: 96vh !important;
   height: 96vw !important;
-  max-height: calc(96vh*.6375) !important;
-  max-width: calc(96vw*1.569) !important;  
+  max-height: calc(96vh * 0.6375) !important;
+  max-width: calc(96vw * 1.569) !important;
   transform: translate(-50%, -50%) rotate(270deg) !important;
 }

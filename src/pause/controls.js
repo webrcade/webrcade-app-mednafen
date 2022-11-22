@@ -175,6 +175,8 @@ export class NgpKeyboardControls extends ControlsTab {
 
 export class Pce2GamepadControls extends ControlsTab {
   render() {
+    const { mapRunSelect } = this.props;
+
     return (
       <>
         {[
@@ -183,9 +185,9 @@ export class Pce2GamepadControls extends ControlsTab {
           this.renderControl('dpad', 'Move'),
           this.renderControl('lanalog', 'Move'),
           this.renderControl('b', 'I'),
-          this.renderControl('x', 'I'),
+          mapRunSelect ? this.renderControl('x', 'Run') : this.renderControl('x', 'I'),
           this.renderControl('a', 'II'),
-          this.renderControl('y', 'II'),
+          mapRunSelect ? this.renderControl('y', 'Select') : this.renderControl('y', 'II'),
         ]}
       </>
     );
@@ -194,6 +196,8 @@ export class Pce2GamepadControls extends ControlsTab {
 
 export class Pce2KeyboardControls extends ControlsTab {
   render() {
+    const { mapRunSelect } = this.props;
+
     return (
       <>
         {[
@@ -204,9 +208,9 @@ export class Pce2KeyboardControls extends ControlsTab {
           this.renderKey('ArrowLeft', 'Left'),
           this.renderKey('ArrowRight', 'Right'),
           this.renderKey('KeyX', 'I'),
-          this.renderKey('KeyA', 'I'),
+          mapRunSelect ? this.renderKey('KeyA', 'Run') : this.renderKey('KeyA', 'I'),
           this.renderKey('KeyZ', 'II'),
-          this.renderKey('KeyS', 'II'),
+          mapRunSelect ? this.renderKey('KeyS', 'Select') : this.renderKey('KeyS', 'II'),
         ]}
       </>
     );
@@ -224,8 +228,8 @@ export class Pce6GamepadControls extends ControlsTab {
           this.renderControl('lanalog', 'Move'),
           this.renderControl('b', 'I'),
           this.renderControl('a', 'II'),
-          this.renderControl('y', 'III'),
-          this.renderControl('x', 'IV'),
+          this.renderControl('x', 'III'),
+          this.renderControl('y', 'IV'),
           this.renderControl('lbump', 'V'),
           this.renderControl('rbump', 'VI'),
         ]}
@@ -247,8 +251,8 @@ export class Pce6KeyboardControls extends ControlsTab {
           this.renderKey('ArrowRight', 'Right'),
           this.renderKey('KeyX', 'I'),
           this.renderKey('KeyZ', 'II'),
-          this.renderKey('KeyS', 'III'),
-          this.renderKey('KeyA', 'IV'),
+          this.renderKey('KeyA', 'III'),
+          this.renderKey('KeyS', 'IV'),
           this.renderKey('KeyQ', 'V'),
           this.renderKey('KeyW', 'VI'),
         ]}

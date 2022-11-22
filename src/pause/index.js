@@ -153,7 +153,7 @@ export class EmulatorPauseScreen extends Component {
                   TEXT_IDS.GAMEPAD_CONTROLS_DETAIL,
                   Resources.getText(TEXT_IDS.TWO_BUTTON),
                 ),
-                content: <Pce2GamepadControls />,
+                content: <Pce2GamepadControls mapRunSelect={appProps.mapRunSelect} />,
               },
               {
                 image: KeyboardWhiteImage,
@@ -161,7 +161,7 @@ export class EmulatorPauseScreen extends Component {
                   TEXT_IDS.KEYBOARD_CONTROLS_DETAIL,
                   Resources.getText(TEXT_IDS.TWO_BUTTON),
                 ),
-                content: <Pce2KeyboardControls />,
+                content: <Pce2KeyboardControls mapRunSelect={appProps.mapRunSelect} />,
               },
             ]}
           />

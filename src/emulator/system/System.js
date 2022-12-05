@@ -48,6 +48,11 @@ export default class System {
     return 'sram.sav';
   }
 
+  getSaveStatePrefix() {
+    const { emu } = this;
+    return emu.app.getStoragePath(`${emu.romMd5}/`);
+  }
+
   getSaveStatePath() {
     const { emu } = this;
     return emu.app.getStoragePath(`${emu.romMd5}/sav`);

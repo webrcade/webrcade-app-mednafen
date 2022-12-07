@@ -167,6 +167,13 @@ export class Emulator extends AppWrapper {
     const { FS } = mednafenModule;
 
     if (!system.isSaveStateSupported()) {
+      // Check cloud storage (Lynx, to eliminate delay when showing settings)
+      try {
+        await this.getSaveManager().isCloudEnabled(this.loadMessageCallback);
+      } finally {
+        this.loadMessageCallback(null);
+      }
+
       return;
     }
 

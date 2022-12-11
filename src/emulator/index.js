@@ -283,10 +283,23 @@ export class Emulator extends AppWrapper {
       } catch (e) {}
 
       if (s) {
+        const props = {}
+
+        const ar = system.getShotAspectRatio();
+        if (ar) {
+          props.aspectRatio = `${ar}`;
+        }
+        const rot = system.getShotRotation();
+        if (rot) {
+          props.transform = `rotate(${rot}deg)`;
+        }
+
         await this.getSaveManager().saveState(
           system.getSaveStatePrefix(), slot, s,
           this.canvas,
-          this.saveMessageCallback);
+          this.saveMessageCallback,
+          null,
+          props);
       }
     } catch (e) {
       LOG.error('Error saving state: ' + e);

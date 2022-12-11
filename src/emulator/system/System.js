@@ -57,4 +57,7 @@ export default class System {
     const { emu } = this;
     return emu.app.getStoragePath(`${emu.romMd5}/sav`);
   }
+
+  getShotAspectRatio() { return null; }
+  getShotRotation() { return null; }
 }

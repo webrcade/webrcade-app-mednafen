@@ -31,6 +31,8 @@ export default class PceFast extends System {
     );
   }
 
+  getShotAspectRatio() { return 1.333; }
+
   pollControls(controllers, index) {
     let input = PCE_NONE;
     if (controllers.isControlDown(index, CIDS.UP)) {

@@ -76,6 +76,8 @@ export default class Vb extends System {
     this.padData[index] = input;
   }
 
+  getShotAspectRatio() { return 1.714; }
+
   getRefreshRate() {
     return 50.3;
   }

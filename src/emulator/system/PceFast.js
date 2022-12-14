@@ -26,7 +26,12 @@ export default class PceFast extends System {
     this.twoButtonMode = !(
       emu.getProps().pad6button && emu.getProps().pad6button === true
     );
+    this.mapRunSelect = (
+      emu.getProps().mapRunSelect && emu.getProps().mapRunSelect === true
+    );
   }
+
+  getShotAspectRatio() { return 1.333; }
 
   pollControls(controllers, index) {
     let input = PCE_NONE;
@@ -57,16 +62,16 @@ export default class PceFast extends System {
 
     if (this.twoButtonMode) {
       if (controllers.isControlDown(index, CIDS.X)) {
-        input |= PCE_I;
+        input |= this.mapRunSelect ? PCE_RUN : PCE_I;
       }
       if (controllers.isControlDown(index, CIDS.Y)) {
-        input |= PCE_II;
+        input |= this.mapRunSelect ? PCE_SELECT : PCE_II;
       }
     } else {
-      if (controllers.isControlDown(index, CIDS.Y)) {
+      if (controllers.isControlDown(index, CIDS.X)) {
         input |= PCE_III;
       }
-      if (controllers.isControlDown(index, CIDS.X)) {
+      if (controllers.isControlDown(index, CIDS.Y)) {
         input |= PCE_IV;
       }
       if (controllers.isControlDown(index, CIDS.LBUMP)) {

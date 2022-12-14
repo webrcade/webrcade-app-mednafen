@@ -31,6 +31,9 @@ export default class Lynx extends System {
     }
   }
 
+  getShotAspectRatio() { return 1.569; }
+  getShotRotation() { return this.rotation; }
+
   pollControls(controllers, index) {
     let input = LYNX_NONE;
 

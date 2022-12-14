@@ -23,6 +23,8 @@ export default class Ngc extends System {
     }
   }
 
+  getShotAspectRatio() { return 1.052; }
+
   pollControls(controllers, index) {
     let input = NGP_NONE;
 

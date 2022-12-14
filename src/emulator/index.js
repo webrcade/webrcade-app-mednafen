@@ -17,6 +17,8 @@ import WSwan from './system/WSwan';
 
 window.audioCallback = null;
 
+const STATE_FILE_PATH = "/state";
+
 export class Emulator extends AppWrapper {
   constructor(app, debug = false) {
     super(app, debug);
@@ -165,6 +167,13 @@ export class Emulator extends AppWrapper {
     const { FS } = mednafenModule;
 
     if (!system.isSaveStateSupported()) {
+      // Check cloud storage (Lynx, to eliminate delay when showing settings)
+      try {
+        await this.getSaveManager().isCloudEnabled(this.loadMessageCallback);
+      } finally {
+        this.loadMessageCallback(null);
+      }
+
       return;
     }
 
@@ -253,6 +262,81 @@ export class Emulator extends AppWrapper {
     }
   }
 
+  async getStateSlots(showStatus = true) {
+    const { system } = this;
+    return await this.getSaveManager().getStateSlots(
+      system.getSaveStatePrefix(), showStatus ? this.saveMessageCallback : null
+    );
+  }
+
+  async saveStateForSlot(slot) {
+    const { mednafenModule, system } = this;
+
+    mednafenModule._emSaveState();
+
+    let s = null;
+    try {
+
+      const FS = mednafenModule.FS;
+      try {
+        s = FS.readFile(STATE_FILE_PATH);
+      } catch (e) {}
+
+      if (s) {
+        const props = {}
+
+        const ar = system.getShotAspectRatio();
+        if (ar) {
+          props.aspectRatio = `${ar}`;
+        }
+        const rot = system.getShotRotation();
+        if (rot) {
+          props.transform = `rotate(${rot}deg)`;
+        }
+
+        await this.getSaveManager().saveState(
+          system.getSaveStatePrefix(), slot, s,
+          this.canvas,
+          this.saveMessageCallback,
+          null,
+          props);
+      }
+    } catch (e) {
+      LOG.error('Error saving state: ' + e);
+    }
+
+    return true;
+  }
+
+  async loadStateForSlot(slot) {
+    const { mednafenModule, system } = this;
+
+    try {
+      const state = await this.getSaveManager().loadState(
+        system.getSaveStatePrefix(), slot, this.saveMessageCallback);
+
+      if (state) {
+        const FS = mednafenModule.FS;
+        FS.writeFile(STATE_FILE_PATH, state);
+        mednafenModule._emLoadState();
+      }
+    } catch (e) {
+      LOG.error('Error loading state: ' + e);
+    }
+    return true;
+  }
+
+  async deleteStateForSlot(slot, showStatus = true) {
+    const { system } = this;
+    try {
+      await this.getSaveManager().deleteState(
+        system.getSaveStatePrefix(), slot, showStatus ? this.saveMessageCallback : null);
+    } catch (e) {
+      LOG.error('Error deleting state: ' + e);
+    }
+    return true;
+  }
+
   async onStart(canvas) {
     const { app, debug, mednafenModule, romBytes, system } = this;
 
@@ -262,6 +346,7 @@ export class Emulator extends AppWrapper {
 
       // Set the canvas for the module
       mednafenModule.canvas = canvas;
+      this.canvas = canvas;
 
       // Load save state
       await this.loadState();

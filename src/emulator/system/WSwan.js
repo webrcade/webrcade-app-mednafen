@@ -31,6 +31,9 @@ export default class WSwan extends System {
     }
   }
 
+  getShotAspectRatio() { return 1.555; }
+  getShotRotation() { return this.rotated ? 270 : null; }
+
   pollControls(controllers, index) {
     let input = WS_NONE;
 

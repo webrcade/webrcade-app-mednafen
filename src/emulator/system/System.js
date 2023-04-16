@@ -26,12 +26,14 @@ export default class System {
     const canvas = this.emu.mednafenModule.canvas;
     if (!canvas) throw Error('Canvas has not been set.');
     canvas.classList.add(className);
+    this.emu.updateScreenSize();
   }
 
   removeCanvasClass(className) {
     const canvas = this.emu.mednafenModule.canvas;
     if (!canvas) throw Error('Canvas has not been set.');
     canvas.classList.remove(className);
+    this.emu.updateScreenSize();
   }
 
   updateInputDeviceData(device) {

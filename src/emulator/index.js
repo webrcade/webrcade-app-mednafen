@@ -139,6 +139,20 @@ export class Emulator extends AppWrapper {
     console.log('destroy end');
   }
 
+  getDefaultAspectRatio() {
+    const { system } = this;
+    const ar = system.getShotAspectRatio();
+    return ar;
+  }
+
+  isScreenRotated() {
+    const { system } = this;
+    let rot = system.getShotRotation();
+    if (rot) rot = parseInt(rot);
+    const rotated = ( rot === 90 || rot === 270 );
+    return rotated;
+  }
+
   async migrateSaves() {
     const { storage, system, SAVE_NAME } = this;
 
@@ -351,6 +365,7 @@ export class Emulator extends AppWrapper {
       // Load save state
       await this.loadState();
 
+
       // Initialize the module
       mednafenModule._emInit();
 
@@ -396,10 +411,15 @@ export class Emulator extends AppWrapper {
       };
 
       // Start the display loop
+      let count = 0;
       this.displayLoop.start(() => {
         try {
           this.pollControls();
           mednafenModule._emStep();
+          if (count < 10) {
+            this.updateScreenSize();
+            count++;
+          }
           const refresh = system.getRefreshRate();
           if (refresh !== refreshRate) {
             refreshRate = refresh;

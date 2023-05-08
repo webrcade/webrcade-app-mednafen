@@ -17,6 +17,7 @@ import {
 } from './controls';
 
 import {
+  AppSettingsEditor,
   CustomPauseScreen,
   EditorScreen,
   PceBackground,
@@ -33,6 +34,7 @@ import {
   Resources,
   SaveStatesEditor,
   SaveWhiteImage,
+  SettingsAppWhiteImage,
   TEXT_IDS,
 } from '@webrcade/app-common';
 
@@ -49,10 +51,11 @@ export class EmulatorPauseScreen extends Component {
   ModeEnum = {
     PAUSE: 'pause',
     CONTROLS: 'controls',
+    SETTINGS: 'settings',
     STATE: 'state',
   };
 
-  ADDITIONAL_BUTTON_REFS = [React.createRef(), React.createRef()];
+  ADDITIONAL_BUTTON_REFS = [React.createRef(), React.createRef(), React.createRef()];
 
   componentDidMount() {
     const { loaded } = this.state;
@@ -75,11 +78,11 @@ export class EmulatorPauseScreen extends Component {
     const { ADDITIONAL_BUTTON_REFS, ModeEnum } = this;
     const { appProps, closeCallback, emulator, exitCallback, isEditor, isStandalone, type } =
       this.props;
-      const { cloudEnabled, loaded, mode } = this.state;
+    const { cloudEnabled, loaded, mode } = this.state;
 
-      if (!loaded) {
-        return null;
-      }
+    if (!loaded) {
+      return null;
+    }
 
     const additionalButtons = [
       <PauseScreenButton
@@ -92,17 +95,35 @@ export class EmulatorPauseScreen extends Component {
         onClick={() => {
           this.setState({ mode: ModeEnum.CONTROLS });
         }}
-      />
+      />,
+      <PauseScreenButton
+        imgSrc={SettingsAppWhiteImage}
+        buttonRef={ADDITIONAL_BUTTON_REFS[1]}
+        label={
+              type === 'mednafen-pce' ? "PC Engine Settings" :
+                type === 'mednafen-sgx' ? "SuperGrafx Settings" :
+                  type === 'mednafen-ngp' ? "NG Pocket Settings" :
+                    type === 'mednafen-lnx' ? "Lynx Settings" :
+                      type === 'mednafen-ws' ? "WonderSwan Settings" :
+                        type === 'mednafen-wsc' ? "WS Color Settings" :
+                          type === 'mednafen-ngc' ? "NGP Color Settings": "Virtual Boy Settings"}
+        onHandlePad={(focusGrid, e) =>
+          focusGrid.moveFocus(e.type, ADDITIONAL_BUTTON_REFS[1])
+        }
+        onClick={() => {
+          this.setState({ mode: ModeEnum.SETTINGS });
+        }}
+      />,
     ];
 
     if (cloudEnabled) {
       additionalButtons.push(
         <PauseScreenButton
           imgSrc={SaveWhiteImage}
-          buttonRef={ADDITIONAL_BUTTON_REFS[1]}
+          buttonRef={ADDITIONAL_BUTTON_REFS[2]}
           label={Resources.getText(TEXT_IDS.SAVE_STATES)}
           onHandlePad={(focusGrid, e) =>
-            focusGrid.moveFocus(e.type, ADDITIONAL_BUTTON_REFS[1])
+            focusGrid.moveFocus(e.type, ADDITIONAL_BUTTON_REFS[2])
           }
           onClick={() => {
             this.setState({ mode: ModeEnum.STATE });
@@ -125,7 +146,7 @@ export class EmulatorPauseScreen extends Component {
           />
         ) : null}
         {mode === ModeEnum.CONTROLS &&
-        (type === 'mednafen-ws' || type === 'mednafen-wsc') ? (
+          (type === 'mednafen-ws' || type === 'mednafen-wsc') ? (
           <EditorScreen
             onClose={closeCallback}
             tabs={[
@@ -176,7 +197,7 @@ export class EmulatorPauseScreen extends Component {
           />
         ) : null}
         {mode === ModeEnum.CONTROLS &&
-        (type === 'mednafen-ngc' || type === 'mednafen-ngp') ? (
+          (type === 'mednafen-ngc' || type === 'mednafen-ngp') ? (
           <EditorScreen
             onClose={closeCallback}
             tabs={[
@@ -194,8 +215,8 @@ export class EmulatorPauseScreen extends Component {
           />
         ) : null}
         {mode === ModeEnum.CONTROLS &&
-        (type === 'mednafen-pce' || type === 'mednafen-sgx') &&
-        appProps.pad6button !== true ? (
+          (type === 'mednafen-pce' || type === 'mednafen-sgx') &&
+          appProps.pad6button !== true ? (
           <EditorScreen
             onClose={closeCallback}
             tabs={[
@@ -219,8 +240,8 @@ export class EmulatorPauseScreen extends Component {
           />
         ) : null}
         {mode === ModeEnum.CONTROLS &&
-        (type === 'mednafen-pce' || type === 'mednafen-sgx') &&
-        appProps.pad6button === true ? (
+          (type === 'mednafen-pce' || type === 'mednafen-sgx') &&
+          appProps.pad6button === true ? (
           <EditorScreen
             onClose={closeCallback}
             tabs={[
@@ -241,6 +262,12 @@ export class EmulatorPauseScreen extends Component {
                 content: <Pce6KeyboardControls />,
               },
             ]}
+          />
+        ) : null}
+        {mode === ModeEnum.SETTINGS ? (
+          <AppSettingsEditor
+            emulator={emulator}
+            onClose={closeCallback}
           />
         ) : null}
         {mode === ModeEnum.STATE ? (

@@ -21,7 +21,9 @@ export default class Lynx extends System {
     this.rotation = 0;
     if (this.emu.getProps().rotation) {
       this.rotation = parseInt(this.emu.getProps().rotation);
+      if (this.rotation === -1) this.rotation = 0;
     }
+
     this.bootRom = this.emu.getProps().lnx_boot;
     if (!this.bootRom) {
       throw new Error(

@@ -14,6 +14,8 @@ import {
   WonderSwanGamepadControlsRotated,
   WonderSwanKeyboardControls,
   WonderSwanKeyboardControlsRotated,
+  VirtualBoyGamepadControls,
+  VirtualBoyKeyboardControls,
 } from './controls';
 
 import {
@@ -192,6 +194,23 @@ export class EmulatorPauseScreen extends Component {
                 image: KeyboardWhiteImage,
                 label: Resources.getText(TEXT_IDS.KEYBOARD_CONTROLS),
                 content: <LynxKeyboardControls />,
+              },
+            ]}
+          />
+        ) : null}
+        {mode === ModeEnum.CONTROLS && type === 'mednafen-vb' ? (
+          <EditorScreen
+            onClose={closeCallback}
+            tabs={[
+              {
+                image: GamepadWhiteImage,
+                label: Resources.getText(TEXT_IDS.GAMEPAD_CONTROLS),
+                content: <VirtualBoyGamepadControls />,
+              },
+              {
+                image: KeyboardWhiteImage,
+                label: Resources.getText(TEXT_IDS.KEYBOARD_CONTROLS),
+                content: <VirtualBoyKeyboardControls />,
               },
             ]}
           />

@@ -1,5 +1,5 @@
 import {
-  AppWrapper,
+  BasicAppWrapper,
   Controller,
   Controllers,
   DefaultKeyCodeToControlMapping,
@@ -19,9 +19,13 @@ window.audioCallback = null;
 
 const STATE_FILE_PATH = "/state";
 
-export class Emulator extends AppWrapper {
+export class Emulator extends BasicAppWrapper {
   constructor(app, debug = false) {
     super(app, debug);
+
+    // Read by the shared TouchOverlay component (webrcade-app-common) to
+    // reach the running emulator instance.
+    window.emulator = this;
 
     this.mednafenModule = null;
     this.romBytes = null;
@@ -83,6 +87,12 @@ export class Emulator extends AppWrapper {
     await this.saveState();
   }
 
+  // Base class default pauses on any tap anywhere on screen -- redundant
+  // (and disruptive) now that there's a dedicated Pause button in the
+  // touch overlay. Same override snes9x/fceux/parallel-n64/vba-m/javatari/
+  // js7800/fbneo/genplusgx/Coleco/A5200/Jaguar use for the same reason.
+  createTouchListener() {}
+
   pollControls() {
     const { controllers, system } = this;
 
@@ -117,7 +127,16 @@ export class Emulator extends AppWrapper {
       script.onload = () => {
         LOG.info('Script loaded.');
         if (window.mednafen) {
-          window.mednafen().then((mednafenModule) => {
+          // doNotCaptureKeyboard must be set before the module initializes --
+          // Emscripten's SDL2 backend reads it once, inside _SDL_Init(), to
+          // decide whether to addEventListener("keydown", SDL.receiveEvent)
+          // at all. addEventListener captures that function reference at
+          // registration time, so trying to neutralize SDL.receiveEvent
+          // *after* the fact (what this used to do) doesn't work once
+          // _SDL_Init() has already run -- the original handler (which
+          // preventDefault()s browser keys like Tab) stays permanently
+          // registered regardless. This is the correct place to disable it.
+          window.mednafen({ doNotCaptureKeyboard: true }).then((mednafenModule) => {
             console.log(mednafenModule);
             mednafenModule.onAbort = (msg) => app.exit(msg);
             mednafenModule.onExit = () => app.exit();
@@ -365,7 +384,6 @@ export class Emulator extends AppWrapper {
       // Load save state
       await this.loadState();
 
-
       // Initialize the module
       mednafenModule._emInit();
 
@@ -415,6 +433,7 @@ export class Emulator extends AppWrapper {
       this.displayLoop.start(() => {
         try {
           this.pollControls();
+          this.onFrame();
           mednafenModule._emStep();
           if (count < 10) {
             this.updateScreenSize();

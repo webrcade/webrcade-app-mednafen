@@ -5,6 +5,7 @@ import {
   AppRegistry,
   FetchAppData,
   Resources,
+  TouchOverlay,
   Unzip,
   UrlUtil,
   WebrcadeApp,
@@ -19,6 +20,21 @@ import './App.scss';
 
 class App extends WebrcadeApp {
   emulator = null;
+
+  constructor() {
+    super();
+    this.state = {
+      ...this.state,
+      showCanvas: false,
+    };
+  }
+
+  // Called once by Emulator.onFrame() (BasicAppWrapper) -- gates the
+  // upper-right touch overlay (Pause icon) so it doesn't render before
+  // the emulator itself exists, same as the other migrated GRP1 apps.
+  showCanvas() {
+    this.setState({ showCanvas: true });
+  }
 
   componentDidMount() {
     super.componentDidMount();
@@ -224,7 +240,7 @@ class App extends WebrcadeApp {
   }
 
   render() {
-    const { mode } = this.state;
+    const { mode, showCanvas } = this.state;
     const { ModeEnum } = this;
 
     return (
@@ -235,6 +251,7 @@ class App extends WebrcadeApp {
         {mode === ModeEnum.LOADED || mode === ModeEnum.PAUSE
           ? this.renderCanvas()
           : null}
+        <TouchOverlay show={showCanvas} />
       </>
     );
   }
